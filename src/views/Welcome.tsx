@@ -10,10 +10,12 @@ export const Welcome = defineComponent({
           <img src={mangosteen} alt="" />
           <h1>GS记账</h1>
         </header>
-        {/* 需要定义子路由渲染组件 */}
         <main>
-          <RouterView />
+          <RouterView name="main" />
         </main>
+        <footer>
+          <RouterView name="footer" />
+        </footer>
       </div>
     );
   },
