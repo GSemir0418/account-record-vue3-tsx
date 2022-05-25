@@ -1,10 +1,11 @@
 import s from "./welcome.module.scss";
-import clock from "../../assets/icons/clock.svg";
 
 export const Second = () => {
   return (
     <div class={s.card}>
-      <img src={clock} />
+      <svg>
+        <use xlinkHref="#clock"></use>
+      </svg>
       <h2>
         每日提醒
         <br />

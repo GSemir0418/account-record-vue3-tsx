@@ -14,6 +14,10 @@
         align-items: center;
         padding-top: 66px;
         color: var(--welcome-bg-end);
+        svg {
+            width: 64px;
+            height: 69px;
+        }
     }
     main {
         // 尺寸自动伸缩

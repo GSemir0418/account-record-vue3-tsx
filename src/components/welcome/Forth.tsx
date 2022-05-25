@@ -1,9 +1,11 @@
 import s from "./welcome.module.scss";
-import cloud from "../../assets/icons/cloud.svg";
 export const Forth = () => {
   return (
     <div class={s.card}>
-      <img src={cloud} />
+      {/* 使用SVG雪碧图 */}
+      <svg>
+        <use xlinkHref="#cloud"></use>
+      </svg>
       <h2>
         每日提醒
         <br />
