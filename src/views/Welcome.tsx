@@ -1,10 +1,16 @@
-import { defineComponent, Transition, VNode } from "vue";
+import { defineComponent, Transition, ref, VNode, watchEffect } from "vue";
 import { RouteLocationNormalizedLoaded, RouterView } from "vue-router";
 import s from "./Welcome.module.scss";
-import mangosteen from "../assets/icons/mangosteen.svg";
+import { useSwipe } from "../hooks/useSwipe";
 
 export const Welcome = defineComponent({
   setup(props, context) {
+    const mainRef = ref<HTMLElement | null>(null);
+    const { distance, direction, isMoving } = useSwipe(mainRef);
+    // 立即执行传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数。
+    watchEffect(() => {
+      console.log(direction.value, isMoving.value);
+    });
     return () => (
       <div class={s.wrapper}>
         <header>
@@ -13,7 +19,7 @@ export const Welcome = defineComponent({
           </svg>
           <h1>GS记账</h1>
         </header>
-        <main>
+        <main ref={mainRef}>
           <RouterView name="main">
             {({
               Component,
