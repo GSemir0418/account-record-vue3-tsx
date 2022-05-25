@@ -26,7 +26,9 @@ export const Welcome = defineComponent({
     // 将路由切换函数节流处理
     const pushRoute = throttle(() => {
       const routeName = route.name ? route.name.toString() : "Welcome1";
-      router.push(welcomeRouteMap[routeName]);
+      // 使用replace代替push 防止回退
+      // router.push(welcomeRouteMap[routeName]);
+      router.replace(welcomeRouteMap[routeName]);
     }, 500);
     watchEffect(() => {
       // 每当isMoving或者direction的值发生变动，都会执行
