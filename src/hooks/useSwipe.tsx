@@ -1,11 +1,23 @@
 import { computed, ComputedRef, onMounted, onUnmounted, Ref, ref } from "vue";
 type Point = { x: number; y: number };
-type UseSwipe = (el: Ref<HTMLElement | null>) => {
+interface Options {
+  // 生命周期
+  beforeStart?: (e: TouchEvent) => void;
+  afterStart?: (e: TouchEvent) => void;
+  beforeMove?: (e: TouchEvent) => void;
+  afterMove?: (e: TouchEvent) => void;
+  beforeEnd?: (e: TouchEvent) => void;
+  afterEnd?: (e: TouchEvent) => void;
+}
+type UseSwipe = (
+  el: Ref<HTMLElement | null>,
+  options?: Options
+) => {
   isMoving: Ref<boolean>;
   distance: ComputedRef<{ x: number; y: number } | null>;
   direction: ComputedRef<"" | "right" | "left" | "down" | "up">;
 };
-export const useSwipe: UseSwipe = (mainRef) => {
+export const useSwipe: UseSwipe = (mainRef, options?) => {
   // 滑动开始坐标
   const startPosition = ref<Point | null>(null);
   // 滑动结束坐标
@@ -35,8 +47,10 @@ export const useSwipe: UseSwipe = (mainRef) => {
       return y > 0 ? "down" : "up";
     }
   });
-  // 三个事件的回调
+
+  // 三个事件的回调,生命周期hook贯穿其中
   const onTouchStart = (e: TouchEvent) => {
+    options?.beforeStart?.(e);
     isMoving.value = true;
     endPosition.value = null;
     startPosition.value = {
@@ -44,16 +58,21 @@ export const useSwipe: UseSwipe = (mainRef) => {
       x: e.touches[0].screenX,
       y: e.touches[0].screenY,
     };
+    options?.afterStart?.(e);
   };
   const onTouchMove = (e: TouchEvent) => {
+    options?.beforeMove?.(e);
     if (!startPosition.value) {
       return;
     }
     // endPosition实时更新
     endPosition.value = { x: e.touches[0].screenX, y: e.touches[0].screenY };
+    options?.afterMove?.(e);
   };
   const onTouchEnd = (e: TouchEvent) => {
+    options?.beforeEnd?.(e);
     isMoving.value = false;
+    options?.afterEnd?.(e);
   };
 
   // 在useSwipe所在的组件挂载后 添加touch的事件监听
