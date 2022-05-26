@@ -1,13 +1,20 @@
 .button {
-    width:100%;
+    width: 100%;
     &_wrapper {
-        padding:16px
+        padding: 16px
     }
 }
 .pig {
-    height:128px;
-    width:128px;
+    height: 128px;
+    width: 128px;
     &_wrapper {
-        padding:160px 0;
+        padding: 140px 0;
     }
+}
+.navIcon {
+    width: 30px;
+    height: 30px;
+    fill: var(--nav-text-color);
+    // 微调位置
+    margin-top: 2px;
 }
