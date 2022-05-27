@@ -1,0 +1,16 @@
+.mask {
+    position: absolute;
+    top: var(--overlay-safe-area-top);
+    z-index: var(--z-index-overlay);
+    width: 100%;
+    height: calc(100% - var(--overlay-safe-area-top));
+    background-color: var(--overlay-mask-bg);
+}
+.overlay {
+    position: absolute;
+    top: var(--overlay-safe-area-top);
+    z-index: calc(var(--z-index-overlay) + 1);
+    width: 16em;
+    height: calc(100% - var(--overlay-safe-area-top));
+    background-color: var(--overlay-bg);
+}
