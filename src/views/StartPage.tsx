@@ -1,10 +1,10 @@
 import { defineComponent, ref } from "vue";
 import { RouterLink } from "vue-router";
+import { MainLayout } from "../layouts/MainLayout";
 import { Button } from "../shared/Button";
 import { Center } from "../shared/Center";
 import { FloatButton } from "../shared/FloatButton";
 import { Icon } from "../shared/Icon";
-import { Navbar } from "../shared/Navbar";
 import { Overlay } from "../shared/Overlay";
 import s from "./StartPage.module.scss";
 export const StartPage = defineComponent({
@@ -17,29 +17,30 @@ export const StartPage = defineComponent({
       showOverlay.value = false;
     };
     return () => (
-      <div>
-        <Navbar>
-          {/* 向Navbar的插槽传递icon和title */}
-          {{
-            default: () => "GS记账",
-            icon: () => (
-              <Icon name="menu" class={s.navIcon} onClick={onClickMenu} />
-            ),
-          }}
-        </Navbar>
-        <Center class={s.pig_wrapper}>
-          <Icon class={s.pig} name="pig"></Icon>
-        </Center>
-        <div class={s.button_wrapper}>
-          <RouterLink to="/items/create">
-            <Button class={s.button}>开始记账</Button>
-          </RouterLink>
-        </div>
-        <RouterLink to="/items/create">
-          <FloatButton iconName="add"></FloatButton>
-        </RouterLink>
-        {showOverlay.value && <Overlay close={close} />}
-      </div>
+      <MainLayout>
+        {{
+          default: () => "GS记账",
+          icon: () => (
+            <Icon name="menu" class={s.navIcon} onClick={onClickMenu} />
+          ),
+          main: () => (
+            <>
+              <Center class={s.pig_wrapper}>
+                <Icon class={s.pig} name="pig"></Icon>
+              </Center>
+              <div class={s.button_wrapper}>
+                <RouterLink to="/items/create">
+                  <Button class={s.button}>开始记账</Button>
+                </RouterLink>
+              </div>
+              <RouterLink to="/items/create">
+                <FloatButton iconName="add"></FloatButton>
+              </RouterLink>
+              {showOverlay.value && <Overlay close={close} />}
+            </>
+          ),
+        }}
+      </MainLayout>
     );
   },
 });
