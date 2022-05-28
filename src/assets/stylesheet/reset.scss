@@ -19,3 +19,7 @@ h1, h2, h3, h4, h5 {
 button, input {
     font:inherit;
 }
+// 清除li的默认样式
+li {
+    list-style: none;
+}

@@ -33,7 +33,7 @@ export const Tabs = defineComponent({
               </li>
             ))}
           </ol>
-          <div></div>
+          <div>{nodeArr.find((item) => item.props?.name === props.selected)}</div>
         </div>
       );
     };
