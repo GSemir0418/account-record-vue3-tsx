@@ -5,9 +5,6 @@ export const Tabs = defineComponent({
     selected: {
       type: String as PropType<string>,
     },
-    onChange: {
-      type: Function as PropType<(tab: string) => void>,
-    },
   },
   setup(props, context) {
     return () => {
@@ -28,7 +25,9 @@ export const Tabs = defineComponent({
             {nodeArr.map((item) => (
               <li
                 class={item.props?.name === props.selected ? s.selected : ""}
-                onClick={() => props.onChange?.(item.props?.name)}
+                onClick={() =>
+                  context.emit("update:selected", item.props?.name)
+                }
               >
                 {item.props?.name}
               </li>
