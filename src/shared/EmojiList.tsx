@@ -2,7 +2,13 @@ import { defineComponent, ref } from "vue";
 import { emojiList } from "./emojiList";
 import s from "./EmojiList.module.scss";
 export const EmojiList = defineComponent({
-    setup(props, context) {
+  // 在props中定义一个v-model属性，用于接收父组件绑定的值
+  props: {
+    modelValue: {
+      type: String,
+    },
+  },
+  setup(props, context) {
     // 选中emoji系列的索引
     const refSelected = ref(1);
     const table: [string, string[]][] = [
@@ -76,18 +82,40 @@ export const EmojiList = defineComponent({
       ],
       ["运动", ["sport", "game"]],
     ];
+    const onSeriesClick = (index: number) => {
+      refSelected.value = index;
+    };
+    const onEmojiClick = (emoji: string) => {
+      context.emit("update:modelValue", emoji);
+    };
     return () => (
       <div class={s.emojiList}>
         <nav>
-          {table.map((item) => (
-            <span>{item[0]}</span>
+          {table.map((item, index) => (
+            <span
+              onClick={() => {
+                onSeriesClick(index);
+              }}
+              class={index === refSelected.value ? s.selected : ""}
+            >
+              {item[0]}
+            </span>
           ))}
         </nav>
         <ol>
           {table[refSelected.value][1].map((category) =>
             emojiList
               .find((item) => item[0] === category)?.[1]
-              .map((item) => <li>{item}</li>)
+              .map((item) => (
+                <li
+                  onClick={() => {
+                    onEmojiClick(item);
+                  }}
+                  class={item === props.modelValue ? s.selectedEmoji : ""}
+                >
+                  {item}
+                </li>
+              ))
           )}
         </ol>
       </div>

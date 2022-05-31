@@ -35,9 +35,12 @@ export const TagCreate = defineComponent({
               {/* 表情选择框 */}
               <div class={s.formRow}>
                 <label class={s.formLabel}>
-                  <span class={s.formItem_name}>符号</span>
+                  <span class={s.formItem_name}>符号 {formData.sign}</span>
                   <div class={s.formItem_value}>
-                    <EmojiList class={[s.formItem, s.emojiList, s.error]} />
+                    <EmojiList
+                      v-model={formData.sign}
+                      class={[s.formItem, s.emojiList, s.error]}
+                    />
                   </div>
                   <div class={s.formItem_errorHint}>
                     <span>必填</span>
