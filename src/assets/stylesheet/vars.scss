@@ -1,6 +1,7 @@
 // :root 是根元素的伪类，表示html元素，优先级较html元素高
 :root {
     --amount-text: #53A867;
+    --button-bg-important: #5c33be;
     --button-bg-important: #b1d5c8;
     --button-bg-normal: white;
     --button-bg: #b1d5c8;
@@ -11,8 +12,15 @@
     --button-text-color: #333;
     --button-text-important: #777;
     --date-text: #999999;
+    --emoji-nav-text-selected: #333;
+    --emoji-nav-text: #999;
+    --error-color: #E10505;
     --float-button-bg: #b1d5c8;
     --float-button-text-color: white;
+    --input-border-color: #5c33be;
+    --input-min-height: 48px;
+    --input-radius: var(--button-border-radius);
+    --input-shadow: rgba(0,0,0,0.25);
     --nav-bg-end: var(--welcome-bg-end);
     --nav-bg-start:  var(--welcome-bg-start);
     --nav-text-color: white;
