@@ -1,4 +1,8 @@
 .tabs {
+    position: relative;
+    &::-webkit-scrollbar {
+        width: 0;
+    }
     &_nav {
         // 左右并居中
         display: flex;
@@ -6,6 +10,9 @@
         align-items: center;
         text-align: center;
         color: var(--nav-text-color);
+        position: sticky;
+        z-index: 1;
+        top: 0;
         li {
             flex-shrink: 0;
             flex-grow: 1;
