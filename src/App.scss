@@ -13,3 +13,21 @@ body {
 ::-webkit-scrollbar {
     visibility: hidden;
 }
+
+// 自定义Tabs组件样式
+// 存在选择器优先级的问题
+.customTabs_tabs {
+    & > &_nav {
+        justify-content: flex-start;
+    }
+}
+// 同样存在选择器优先级的问题
+// 原始样式是 tabs_nav > li，即两层选择器（较具体）
+// 那么覆盖样式时也需要两层选择器
+.customTabs_tabs_nav {
+    & > &_item {
+        flex-grow: 0;
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+}

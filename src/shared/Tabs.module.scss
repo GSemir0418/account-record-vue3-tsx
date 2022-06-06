@@ -13,11 +13,11 @@
         position: sticky;
         z-index: 1;
         top: 0;
+        background-color: var(--nav-bg-end);
         li {
             flex-shrink: 0;
             flex-grow: 1;
             padding: 6px 0;
-            background-color: var(--nav-bg-end);
             &.selected {
                 position: relative;
                 // 选中 下边框变白
