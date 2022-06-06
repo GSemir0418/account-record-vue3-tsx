@@ -1,14 +1,17 @@
 .wrapper {
     display: flex;
     flex-direction: column;
+    // 减去header
     height: calc(100vh - 88px);
   }
   .tabs {
+    // tab页伸缩自如
     flex-grow: 1;
     flex-shrink: 1;
     overflow: auto;
   }
   .inputPad_wrapper {
+    // inputPad不允许伸缩
     flex-grow: 0;
     flex-shrink: 0;
   }
@@ -22,6 +25,7 @@
   }
   .tag {
     position: relative;
+    // 一行永远只有五个tag
     width: 20vw;
     height: calc(20vw * 1.14);
     display: flex;
