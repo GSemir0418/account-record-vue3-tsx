@@ -1,4 +1,4 @@
-import { defineComponent, ref } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 import { emojiList } from "./emojiList";
 import s from "./EmojiList.module.scss";
 export const EmojiList = defineComponent({
@@ -6,6 +6,10 @@ export const EmojiList = defineComponent({
   props: {
     modelValue: {
       type: String,
+    },
+    // 目前支持两种方式更新emoji，分别是props和emit
+    onUpdateModelValue: {
+      type: Function as PropType<(emoji: string) => void>,
     },
   },
   setup(props, context) {
@@ -86,7 +90,12 @@ export const EmojiList = defineComponent({
       refSelected.value = index;
     };
     const onEmojiClick = (emoji: string) => {
-      context.emit("update:modelValue", emoji);
+      // 判断是通过emit还是props更新emoji值
+      if (props.onUpdateModelValue) {
+        props.onUpdateModelValue(emoji);
+      } else {
+        context.emit("update:modelValue", emoji);
+      }
     };
     return () => (
       <div class={s.emojiList}>
