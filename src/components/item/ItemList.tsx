@@ -1,11 +1,26 @@
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { MainLayout } from "../../layouts/MainLayout";
 import { Icon } from "../../shared/Icon";
 import { Tab, Tabs } from "../../shared/Tabs";
+import { Time } from "../../shared/time";
 import s from "./ItemList.module.scss";
+import { ItemSummary } from "./ItemSummary";
 export const ItemList = defineComponent({
   setup(props, context) {
     const refSelected = ref("本月");
+    const customTime = reactive({
+      start: new Time(),
+      end: new Time(),
+    });
+    const t = new Time();
+    const times = [
+      { start: t.firstDayOfMonth(), end: t.lastDayOfMonth() },
+      {
+        start: t.add(-1, "month").firstDayOfMonth(),
+        end: t.add(-1, "month").lastDayOfMonth(),
+      },
+      { start: t.firstDayOfYear(), end: t.lastDayOfYear() },
+    ];
     return () => (
       <MainLayout>
         {{
@@ -20,10 +35,30 @@ export const ItemList = defineComponent({
               classPrefix={"customTabs"}
               v-model:selected={refSelected.value}
             >
-              <Tab name="本月">list1</Tab>
-              <Tab name="上月">list2</Tab>
-              <Tab name="今年">list3</Tab>
-              <Tab name="自定义时间">list4</Tab>
+              <Tab name="本月">
+                <ItemSummary
+                  startDate={times[0].start.format()}
+                  endDate={times[0].end.format()}
+                />
+              </Tab>
+              <Tab name="上月">
+                <ItemSummary
+                  startDate={times[1].start.format()}
+                  endDate={times[1].end.format()}
+                />
+              </Tab>
+              <Tab name="今年">
+                <ItemSummary
+                  startDate={times[2].start.format()}
+                  endDate={times[2].end.format()}
+                />
+              </Tab>
+              <Tab name="自定义时间">
+                <ItemSummary
+                  startDate={customTime.start.format()}
+                  endDate={customTime.end.format()}
+                />
+              </Tab>
             </Tabs>
           ),
         }}
