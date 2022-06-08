@@ -1,14 +1,17 @@
 .mask {
-    position: absolute;
+    position: fixed;
     top: var(--overlay-safe-area-top);
     z-index: var(--z-index-overlay);
+    left: 0;
     width: 100%;
     height: calc(100% - var(--overlay-safe-area-top));
     background-color: var(--overlay-mask-bg);
 }
 .overlay {
-    position: absolute;
+    color: var(--text);
+    position: fixed;
     top: var(--overlay-safe-area-top);
+    left: 0;
     z-index: calc(var(--z-index-overlay) + 1);
     width: 16em;
     height: calc(100% - var(--overlay-safe-area-top));
@@ -32,4 +35,11 @@
         }
       }
       
+}
+.icon {
+  width: 30px;
+  height: 30px;
+  fill: var(--nav-text-color);
+  // 微调位置
+  margin-top: 2px;
 }

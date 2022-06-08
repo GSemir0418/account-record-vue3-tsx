@@ -1,7 +1,7 @@
 .button {
     width: 100%;
     &_wrapper {
-        padding: 16px
+        padding: 16px 16px;
     }
 }
 .pig {
@@ -10,11 +10,4 @@
     &_wrapper {
         padding: 140px 0;
     }
-}
-.navIcon {
-    width: 30px;
-    height: 30px;
-    fill: var(--nav-text-color);
-    // 微调位置
-    margin-top: 2px;
 }
