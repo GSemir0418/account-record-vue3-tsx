@@ -9,6 +9,7 @@ export const Tabs = defineComponent({
       type: String as PropType<string>,
     },
   },
+  emits: ["update:selected"],
   setup(props, context) {
     return () => {
       // slots相当于React中的props.children

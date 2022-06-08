@@ -33,6 +33,8 @@ export const FormItem = defineComponent({
       type: String,
     },
   },
+  // 注册自定义事件，表示允许组件接收到对应事件的回调
+  emits:["update:modelValue"],
   setup: (props, context) => {
     const refDateVisible = ref(false);
     const content = computed(() => {

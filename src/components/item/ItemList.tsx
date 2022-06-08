@@ -24,15 +24,15 @@ export const ItemList = defineComponent({
       },
       { start: t.firstDayOfYear(), end: t.lastDayOfYear() },
     ];
-    watchEffect(() => {
-      if (refSelected.value === "自定义时间") {
-        refOverlayVisible.value = true;
-      }
-    });
     const onSubmitCustomTime = (e: Event) => {
       e.preventDefault();
       refOverlayVisible.value = false;
       console.log(toRaw(customTime));
+    };
+    const onSelect = (value: string) => {
+      if (value === "自定义时间") {
+        refOverlayVisible.value = true;
+      }
     };
     return () => (
       <MainLayout>
@@ -48,6 +48,8 @@ export const ItemList = defineComponent({
               <Tabs
                 classPrefix={"customTabs"}
                 v-model:selected={refSelected.value}
+                // 添加了一个update:selected事件监听，表示除正常更新Tabs的selected外，还会控制Overlay的显隐
+                onUpdate:selected={onSelect}
               >
                 <Tab name="本月">
                   <ItemSummary
@@ -91,7 +93,14 @@ export const ItemList = defineComponent({
                       />
                       <FormItem>
                         <div class={s.actions}>
-                          <button type="button">取消</button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              refOverlayVisible.value = false;
+                            }}
+                          >
+                            取消
+                          </button>
                           {/* type必须为submit才能触发form的onsubmit事件 */}
                           <button type="submit">确认</button>
                         </div>

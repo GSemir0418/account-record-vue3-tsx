@@ -12,6 +12,7 @@ export const EmojiList = defineComponent({
       type: Function as PropType<(emoji: string) => void>,
     },
   },
+  emits:["update:modelValue"],
   setup(props, context) {
     // 选中emoji系列的索引
     const refSelected = ref(1);
