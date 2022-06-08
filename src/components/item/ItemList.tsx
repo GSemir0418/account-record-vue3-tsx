@@ -3,6 +3,7 @@ import { defineComponent, reactive, ref, toRaw, watchEffect } from "vue";
 import { MainLayout } from "../../layouts/MainLayout";
 import { Form, FormItem } from "../../shared/Form";
 import { Icon } from "../../shared/Icon";
+import { OverlayIcon } from "../../shared/Overlay";
 import { Tab, Tabs } from "../../shared/Tabs";
 import { Time } from "../../shared/time";
 import s from "./ItemList.module.scss";
@@ -38,11 +39,7 @@ export const ItemList = defineComponent({
       <MainLayout>
         {{
           default: () => "账单列表",
-          icon: () => (
-            <Icon name="menu" class={s.icon}>
-              列表
-            </Icon>
-          ),
+          icon: () => <OverlayIcon />,
           main: () => (
             <>
               <Tabs
