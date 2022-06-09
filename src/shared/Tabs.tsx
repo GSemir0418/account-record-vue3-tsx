@@ -1,5 +1,17 @@
 import { defineComponent, PropType } from "vue";
 import s from "./Tabs.module.scss";
+export const TimeTabsProps = defineComponent({
+  props: {
+    startDate: {
+      type: String as PropType<string>,
+      required: true,
+    },
+    endDate: {
+      type: String as PropType<string>,
+      required: true,
+    },
+  },
+});
 export const Tabs = defineComponent({
   props: {
     classPrefix: {
