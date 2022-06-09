@@ -29,11 +29,14 @@ export const FormItem = defineComponent({
     },
     type: {
       type: String as PropType<
-        "text" | "emojiList" | "date" | "validationCode"
+        "text" | "emojiList" | "date" | "validationCode" | "select"
       >,
     },
     error: {
       type: String,
+    },
+    options: {
+      type: Array as PropType<{ text: string; value: string }[]>,
     },
     placeholder: String,
   },
@@ -102,6 +105,23 @@ export const FormItem = defineComponent({
               <Button class={[s.formItem, s.button, s.validationCodeButton]}>
                 发送验证码
               </Button>
+            </>
+          );
+        case "select":
+          if (!props.options) return;
+          return (
+            <>
+              <select
+                class={[s.formItem, s.select]}
+                value={props.modelValue}
+                onChange={(e: any) => {
+                  context.emit("update:modelValue", e.target.value);
+                }}
+              >
+                {props.options.map((opt) => {
+                  return <option value={opt.value}>{opt.text}</option>;
+                })}
+              </select>
             </>
           );
         // 如果没有type，则默认为插槽，传什么都可以
