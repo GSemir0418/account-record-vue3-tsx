@@ -1,3 +1,4 @@
+import axios from "axios";
 import { DatetimePicker, Popup } from "vant";
 import { computed, defineComponent, PropType, ref } from "vue";
 import { Button } from "./Button";
@@ -39,6 +40,7 @@ export const FormItem = defineComponent({
       type: Array as PropType<{ text: string; value: string }[]>,
     },
     placeholder: String,
+    onClick: Function as PropType<() => void>,
   },
   // 注册自定义事件，表示允许组件接收到对应事件的回调
   emits: ["update:modelValue"],
@@ -102,7 +104,10 @@ export const FormItem = defineComponent({
                 class={[s.formItem, s.input, s.validationCodeInput]}
                 placeholder={props.placeholder}
               />
-              <Button class={[s.formItem, s.button, s.validationCodeButton]}>
+              <Button
+                onClick={props.onClick}
+                class={[s.formItem, s.button, s.validationCodeButton]}
+              >
                 发送验证码
               </Button>
             </>

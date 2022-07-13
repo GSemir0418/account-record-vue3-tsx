@@ -4,6 +4,7 @@ import { Form, FormItem } from "../shared/Form";
 import { Button } from "../shared/Button";
 import { Icon } from "../shared/Icon";
 import s from "./SignInPage.module.scss";
+import axios from "axios";
 export const SignInPage = defineComponent({
   setup(props, context) {
     const formData = reactive({
@@ -17,6 +18,12 @@ export const SignInPage = defineComponent({
     const onSubmit = (e: Event) => {
       // 取消默认行为(提交后会刷新)
       e.preventDefault();
+    };
+    const onSendValidationCode = async () => {
+      const response = await axios.post("/api/v1/validation_codes", {
+        email: formData.email,
+      });
+      console.log(response);
     };
     return () => (
       <MainLayout>
@@ -33,14 +40,17 @@ export const SignInPage = defineComponent({
                 <FormItem
                   label="邮箱"
                   type="text"
+                  v-model={formData.email}
                   placeholder="请输入邮箱，然后点击输入验证码"
                   error={errors.email?.[0]}
                 />
                 <FormItem
                   label="验证码"
                   type="validationCode"
+                  v-model={formData.validationCode}
                   placeholder="请输入六位数字"
                   error={errors.email?.[0]}
+                  onClick={onSendValidationCode}
                 />
                 <FormItem style={{ paddingTop: "96px" }}>
                   <Button>登录</Button>
