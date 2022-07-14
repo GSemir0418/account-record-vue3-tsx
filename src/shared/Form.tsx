@@ -41,11 +41,34 @@ export const FormItem = defineComponent({
     },
     placeholder: String,
     onClick: Function as PropType<() => void>,
+    countFrom: {
+      type: Number,
+      default: 60,
+    },
   },
   // 注册自定义事件，表示允许组件接收到对应事件的回调
   emits: ["update:modelValue"],
   setup: (props, context) => {
     const refDateVisible = ref(false);
+    // 计时器
+    const timer = ref<number>();
+    // 倒计时数字，默认值为父组件指定的countFrom
+    const count = ref<number>(props.countFrom);
+    // 判断显示内容与按钮状态的字段
+    const isCounting = computed(() => !!timer.value);
+    // 子组件倒计时逻辑
+    const startCount = () => {
+      timer.value = setInterval(() => {
+        count.value -= 1;
+        if (count.value === 0) {
+          clearInterval(timer.value);
+          timer.value = undefined;
+          count.value = props.countFrom;
+        }
+      }, 1000);
+    };
+    // 将方法作为子组件实例方法，暴露给父组件，供父组件调用
+    context.expose({ startCount });
     const content = computed(() => {
       switch (props.type) {
         case "text":
@@ -105,10 +128,11 @@ export const FormItem = defineComponent({
                 placeholder={props.placeholder}
               />
               <Button
+                disabled={isCounting.value}
                 onClick={props.onClick}
                 class={[s.formItem, s.button, s.validationCodeButton]}
               >
-                发送验证码
+                {isCounting.value ? count.value : "发送验证码"}
               </Button>
             </>
           );

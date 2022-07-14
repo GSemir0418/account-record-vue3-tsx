@@ -14,11 +14,19 @@ export const Button = defineComponent({
       type: String as PropType<"submit" | "button">,
       default: "button",
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, context) {
     // button的内容应该是从外部插槽定义的
     return () => (
-      <button onClick={props.onClick} class={[s.button, s[props.level]]}>
+      <button
+        disabled={props.disabled}
+        onClick={props.onClick}
+        class={[s.button, s[props.level]]}
+      >
         {context.slots.default?.()}
       </button>
     );
