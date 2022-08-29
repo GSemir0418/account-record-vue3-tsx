@@ -5,6 +5,7 @@ import { Button } from "../shared/Button";
 import { Icon } from "../shared/Icon";
 import s from "./SignInPage.module.scss";
 import axios from "axios";
+import { http } from "../shared/HttpClient";
 export const SignInPage = defineComponent({
   setup(props, context) {
     const validationCodeRef = ref<any>();
@@ -21,17 +22,16 @@ export const SignInPage = defineComponent({
       e.preventDefault();
     };
     const onSendValidationCode = async () => {
-      const response = await axios
-        .post("/api/v1/validation_codes", {
+      const response = await http
+        .post("/validation_codes", {
           email: formData.email,
         })
-        .then(() => {
-          validationCodeRef.value.startCount();
-        })
         .catch((e) => {
-          errors.email = e.response.data.errors.email;
-          console.log(errors);
+          if (e.response.status === 422)
+            Object.assign(errors, e.response.data.errors);
+          throw e;
         });
+      validationCodeRef.value.startCount();
     };
     return () => (
       <MainLayout>
@@ -57,9 +57,9 @@ export const SignInPage = defineComponent({
                   label="验证码"
                   type="validationCode"
                   v-model={formData.validationCode}
-                  countFrom={60}
+                  countFrom={3}
                   placeholder="请输入六位数字"
-                  error={errors.email?.[0]}
+                  error={errors.code?.[0]}
                   onClick={onSendValidationCode}
                 />
                 <FormItem style={{ paddingTop: "96px" }}>

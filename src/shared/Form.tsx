@@ -4,6 +4,7 @@ import { computed, defineComponent, PropType, ref } from "vue";
 import { Button } from "./Button";
 import { EmojiList } from "./EmojiList";
 import s from "./Form.module.scss";
+import { getFriendlyMessage } from "./getFriendlyMessage";
 import { Time } from "./time";
 export const Form = defineComponent({
   props: {
@@ -165,7 +166,9 @@ export const FormItem = defineComponent({
           <div class={s.formItem_value}>{content.value}</div>
           {props.error && (
             <div class={s.formItem_errorHint}>
-              <span>{props.error ?? "　"}</span>
+              <span>
+                {props.error ? getFriendlyMessage(props.error) : "　"}
+              </span>
             </div>
           )}
         </label>
