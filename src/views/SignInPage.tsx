@@ -7,12 +7,13 @@ import s from "./SignInPage.module.scss";
 import axios from "axios";
 import { http } from "../shared/HttpClient";
 import { useBool } from "../shared/useBool";
+import { hasErrors, validate } from "../shared/validate";
 export const SignInPage = defineComponent({
   setup(props, context) {
     const validationCodeRef = ref<any>();
     const formData = reactive({
       email: "",
-      validationCode: "",
+      code: "",
     });
     const errors = reactive({
       email: [],
@@ -22,9 +23,28 @@ export const SignInPage = defineComponent({
     const onSubmit = async (e: Event) => {
       // 取消默认行为(提交后会刷新)
       e.preventDefault();
-      const response = await http.post("/session", formData).then((res) => {
-        console.log(res);
+      Object.assign(errors, {
+        email: [],
+        code: [],
       });
+      Object.assign(
+        errors,
+        validate(formData, [
+          { key: "email", type: "required", message: "必填" },
+          {
+            key: "email",
+            type: "pattern",
+            regExp: /.+@.+/,
+            message: "必须是邮箱地址",
+          },
+          { key: "code", type: "required", message: "必填" },
+        ])
+      );
+      if (!hasErrors(errors)) {
+        const response = await http.post("/session", formData).then((res) => {
+          console.log(res);
+        });
+      }
     };
     const onSendValidationCode = async () => {
       on();
@@ -63,7 +83,7 @@ export const SignInPage = defineComponent({
                   ref={validationCodeRef}
                   label="验证码"
                   type="validationCode"
-                  v-model={formData.validationCode}
+                  v-model={formData.code}
                   countFrom={3}
                   disabled={validationCodeDisable.value}
                   placeholder="请输入六位数字"

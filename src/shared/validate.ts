@@ -3,10 +3,7 @@ export type Rule<T> = {
   // key: string;
   key: keyof T;
   message: string;
-} & (
-  | { type: "regExp"; regExp: RegExp }
-  | { type: "required"; required: boolean }
-);
+} & ({ type: "pattern"; regExp: RegExp } | { type: "required" });
 // 对于表格数据，key和value都不是提前定义的，所以只能暂时定义为一个普通对象的形式
 // 要注意其值也有可能是一个对象，可以循环使用FData类型
 export interface FData {
@@ -23,12 +20,12 @@ export const validate = <T extends FData>(data: T, rules: Rule<T>[]) => {
     const { key, message, type } = rule;
     const value = data[key];
     if (type === "required") {
-      if (rule.required && !value && value === "") {
+      if (!value && value === "") {
         // 初始化为一个数组
         errors[key] = errors[key] ?? [];
         errors[key]?.push(message);
       }
-    } else if (type === "regExp") {
+    } else if (type === "pattern") {
       if (value && !rule.regExp.test(value.toString())) {
         // 初始化为一个数组
         errors[key] = errors[key] ?? [];
@@ -37,4 +34,14 @@ export const validate = <T extends FData>(data: T, rules: Rule<T>[]) => {
     }
   });
   return errors;
+};
+export const hasErrors = (errors: Record<string, string[]>) => {
+  let result = false;
+  for (let key in errors) {
+    if (errors[key].length > 0) {
+      result = true;
+      break;
+    }
+  }
+  return result;
 };
