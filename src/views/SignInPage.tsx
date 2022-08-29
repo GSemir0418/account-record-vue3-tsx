@@ -6,6 +6,7 @@ import { Icon } from "../shared/Icon";
 import s from "./SignInPage.module.scss";
 import axios from "axios";
 import { http } from "../shared/HttpClient";
+import { useBool } from "../shared/useBool";
 export const SignInPage = defineComponent({
   setup(props, context) {
     const validationCodeRef = ref<any>();
@@ -17,7 +18,7 @@ export const SignInPage = defineComponent({
       email: [],
       code: [],
     });
-    const refValidationCodeDisable = ref(false);
+    const { ref: validationCodeDisable, on, off } = useBool(false);
     const onSubmit = async (e: Event) => {
       // 取消默认行为(提交后会刷新)
       e.preventDefault();
@@ -26,7 +27,7 @@ export const SignInPage = defineComponent({
       });
     };
     const onSendValidationCode = async () => {
-      refValidationCodeDisable.value = true;
+      on();
       const response = await http
         .post("/validation_codes", {
           email: formData.email,
@@ -36,9 +37,7 @@ export const SignInPage = defineComponent({
             Object.assign(errors, e.response.data.errors);
           throw e;
         })
-        .finally(() => {
-          refValidationCodeDisable.value = false;
-        });
+        .finally(off);
       validationCodeRef.value.startCount();
     };
     return () => (
@@ -66,7 +65,7 @@ export const SignInPage = defineComponent({
                   type="validationCode"
                   v-model={formData.validationCode}
                   countFrom={3}
-                  disabled={refValidationCodeDisable.value}
+                  disabled={validationCodeDisable.value}
                   placeholder="请输入六位数字"
                   error={errors.code?.[0]}
                   onClick={onSendValidationCode}
