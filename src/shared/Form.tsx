@@ -46,6 +46,10 @@ export const FormItem = defineComponent({
       type: Number,
       default: 60,
     },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   // 注册自定义事件，表示允许组件接收到对应事件的回调
   emits: ["update:modelValue"],
@@ -127,9 +131,13 @@ export const FormItem = defineComponent({
               <input
                 class={[s.formItem, s.input, s.validationCodeInput]}
                 placeholder={props.placeholder}
+                value={props.modelValue}
+                onInput={(e: any) =>
+                  context.emit("update:modelValue", e.target.value)
+                }
               />
               <Button
-                disabled={isCounting.value}
+                disabled={isCounting.value || props.disabled}
                 onClick={props.onClick}
                 class={[s.formItem, s.button, s.validationCodeButton]}
               >

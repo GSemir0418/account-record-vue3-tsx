@@ -17,11 +17,16 @@ export const SignInPage = defineComponent({
       email: [],
       code: [],
     });
-    const onSubmit = (e: Event) => {
+    const refValidationCodeDisable = ref(false);
+    const onSubmit = async (e: Event) => {
       // 取消默认行为(提交后会刷新)
       e.preventDefault();
+      const response = await http.post("/session", formData).then((res) => {
+        console.log(res);
+      });
     };
     const onSendValidationCode = async () => {
+      refValidationCodeDisable.value = true;
       const response = await http
         .post("/validation_codes", {
           email: formData.email,
@@ -30,6 +35,9 @@ export const SignInPage = defineComponent({
           if (e.response.status === 422)
             Object.assign(errors, e.response.data.errors);
           throw e;
+        })
+        .finally(() => {
+          refValidationCodeDisable.value = false;
         });
       validationCodeRef.value.startCount();
     };
@@ -58,12 +66,13 @@ export const SignInPage = defineComponent({
                   type="validationCode"
                   v-model={formData.validationCode}
                   countFrom={3}
+                  disabled={refValidationCodeDisable.value}
                   placeholder="请输入六位数字"
                   error={errors.code?.[0]}
                   onClick={onSendValidationCode}
                 />
                 <FormItem style={{ paddingTop: "96px" }}>
-                  <Button>登录</Button>
+                  <Button type="submit">登录</Button>
                 </FormItem>
               </Form>
             </div>
