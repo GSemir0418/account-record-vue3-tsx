@@ -27,23 +27,29 @@ export const SignInPage = defineComponent({
         email: [],
         code: [],
       });
-      Object.assign(
-        errors,
-        validate(formData, [
-          { key: "email", type: "required", message: "必填" },
-          {
-            key: "email",
-            type: "pattern",
-            regExp: /.+@.+/,
-            message: "必须是邮箱地址",
-          },
-          { key: "code", type: "required", message: "必填" },
-        ])
-      );
+      // Object.assign(
+      //   errors,
+      //   validate(formData, [
+      //     { key: "email", type: "required", message: "必填" },
+      //     {
+      //       key: "email",
+      //       type: "pattern",
+      //       regExp: /.+@.+/,
+      //       message: "必须是邮箱地址",
+      //     },
+      //     { key: "code", type: "required", message: "必填" },
+      //   ])
+      // );
       if (!hasErrors(errors)) {
-        const response = await http.post("/session", formData).then((res) => {
-          console.log(res);
-        });
+        const response = await http
+          .post<{ jwt: string }>("/session", formData)
+          .catch((e) => {
+            if (e.response.status === 422)
+              Object.assign(errors, e.response.data.errors);
+            throw e;
+          });
+        // 登录成功保存jwt
+        localStorage.setItem("jwt", response.data.jwt);
       }
     };
     const onSendValidationCode = async () => {
