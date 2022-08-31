@@ -2,7 +2,8 @@ import axios from "axios";
 import { DatetimePicker, Popup } from "vant";
 import { computed, defineComponent, PropType, ref } from "vue";
 import { Button } from "./Button";
-import { EmojiList } from "./EmojiList";
+// @ts-ignore
+import { EmojiList } from "./EmojiList.tsx";
 import s from "./Form.module.scss";
 import { getFriendlyMessage } from "./getFriendlyMessage";
 import { Time } from "./time";
@@ -93,7 +94,7 @@ export const FormItem = defineComponent({
               modelValue={props.modelValue?.toString()}
               // 如果只有modelValue但没有props回调，则修改model数据会报错
               // 因此改造EmojiList组件
-              onUpdateModelValue={(value) =>
+              onUpdateModelValue={(value: string) =>
                 context.emit("update:modelValue", value)
               }
               class={[s.formItem, s.emojiList, s.error]}
