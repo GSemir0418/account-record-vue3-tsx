@@ -8,9 +8,12 @@ import axios from "axios";
 import { http } from "../shared/HttpClient";
 import { useBool } from "../shared/useBool";
 import { hasErrors, validate } from "../shared/validate";
+import { useRoute, useRouter } from "vue-router";
 export const SignInPage = defineComponent({
   setup(props, context) {
     const validationCodeRef = ref<any>();
+    const route = useRoute();
+    const router = useRouter();
     const formData = reactive({
       email: "",
       code: "",
@@ -50,6 +53,10 @@ export const SignInPage = defineComponent({
           });
         // 登录成功保存jwt
         localStorage.setItem("jwt", response.data.jwt);
+        // 跳转回之前页面
+        // router.push("/sign_in?return_to=" + encodeURIComponent(route.fullPath));
+        const returnTo = route.query.return_to?.toString();
+        router.push(returnTo || "/");
       }
     };
     const onSendValidationCode = async () => {
