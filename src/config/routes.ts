@@ -23,6 +23,10 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/welcome",
     component: Welcome,
+    beforeEnter: (to, from, next) => {
+      // 如果曾经跳过过，那么就别想回来了
+      localStorage.getItem("skipFeatures") !== null ? next("/start") : next();
+    },
     children: [
       // 注意path不需要'/'
       { path: "", redirect: "/welcome/1" },
