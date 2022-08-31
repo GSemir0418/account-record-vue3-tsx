@@ -66,7 +66,13 @@ export class HttpClient {
 
 export const http = new HttpClient("/api/v1");
 // 拦截器
-// http.instance.interceptors.request.use(() => {}, () => {});
+http.instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("jwt");
+  if (token) {
+    config.headers!.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 http.instance.interceptors.response.use(
   (response) => {
     console.log(response);
