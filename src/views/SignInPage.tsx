@@ -46,7 +46,10 @@ export const SignInPage = defineComponent({
       );
       if (!hasErrors(errors)) {
         const response = await http
-          .post<{ jwt: string }>("/session", formData)
+          .post<{ jwt: string }>("/session", formData, {
+            params: { _m: "session" },
+            timeout: 1000,
+          })
           .catch((e) => {
             if (e.response.status === 422)
               Object.assign(errors, e.response.data.errors);
@@ -54,11 +57,11 @@ export const SignInPage = defineComponent({
           });
         // 登录成功保存jwt
         localStorage.setItem("jwt", response.data.jwt);
-        // 刷新当前用户
-        refreshMe();
         // 跳转回之前页面
         // router.push("/sign_in?return_to=" + encodeURIComponent(route.fullPath));
         const returnTo = route.query.return_to?.toString();
+        // 刷新当前用户
+        refreshMe();
         router.push(returnTo || "/");
       }
     };

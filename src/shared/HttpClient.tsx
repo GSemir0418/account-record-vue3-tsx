@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from "axios";
+import { mock } from "../mock/mock";
 type JSONValue =
   | string
   | number
@@ -74,8 +75,24 @@ http.instance.interceptors.request.use((config) => {
   return config;
 });
 http.instance.interceptors.response.use(
+  (resp) => {
+    mock(resp);
+    return resp;
+  },
+  (error) => {
+    // 对请求失败的情况也尝试mock
+    if (mock(error)) {
+      // return表示错误已被解决
+      return error;
+    } else {
+      // throw表示此处并没有解决错误
+      throw error;
+    }
+  }
+);
+http.instance.interceptors.response.use(
   (response) => {
-    console.log(response);
+    console.log("没意义的响应拦截", response);
     // 记得return 否则会阻塞在这
     return response;
   },
