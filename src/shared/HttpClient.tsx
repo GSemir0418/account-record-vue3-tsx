@@ -17,7 +17,7 @@ export class HttpClient {
   // 泛型表示返回值的类型
   get<R = unknown>(
     url: string,
-    query?: Record<string, string>,
+    query?: Record<string, string | number>,
     config?: Omit<AxiosRequestConfig, "url" | "params" | "method">
   ) {
     return this.instance.request<R>({
