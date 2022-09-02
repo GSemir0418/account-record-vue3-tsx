@@ -42,7 +42,28 @@ export const mockTagIndex: Mock = (config) => {
         pager: createPager(page),
       },
     ];
+  } else if (kind === "income" && (!page || page === 1)) {
+    return [
+      200,
+      {
+        resources: createItem(kind, 25),
+        pager: createPager(page),
+      },
+    ];
+  } else if (kind === "income" && page === 2) {
+    return [
+      200,
+      {
+        resources: createItem(kind, 2),
+        pager: createPager(page),
+      },
+    ];
   } else {
-    return [200, { resources: createItem(kind, 10) }];
+    return [
+      200,
+      {
+        resources: createItem(kind, 25),
+      },
+    ];
   }
 };
