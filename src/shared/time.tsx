@@ -11,8 +11,17 @@
 */
 export class Time {
   date: Date;
-  constructor(date = new Date()) {
-    this.date = date;
+  constructor(date?: string | Date) {
+    if (date === undefined) {
+      console.log("undefined", date);
+      this.date = new Date();
+    } else if (typeof date === "string") {
+      console.log("string", date);
+      this.date = new Date(date);
+    } else {
+      console.log("date", date);
+      this.date = date;
+    }
   }
   format(pattern = "YYYY-MM-DD") {
     // 目前支持的格式有 YYYY MM DD HH mm ss SSS

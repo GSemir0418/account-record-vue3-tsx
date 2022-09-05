@@ -4,15 +4,18 @@ import { DatetimePicker, Popup } from "vant";
 import { Time } from "../../shared/time";
 import s from "./InputPad.module.scss";
 export const InputPad = defineComponent({
+  props: {
+    happenAt: String,
+    amount: Number,
+  },
   setup(props, context) {
     // 日期选择器功能
-    const now = new Date();
-    const refDate = ref<Date>(now);
+    // const { happenAt } = props; // 不能变量解构取出
     const refIsDatePickerShow = ref(false);
     const showDatePicker = () => (refIsDatePickerShow.value = true);
     const onCancel = () => (refIsDatePickerShow.value = false);
     const onConfirm = (date: Date) => {
-      refDate.value = date;
+      context.emit("update:happenAt", date.toISOString());
       onCancel();
     };
     // 数字输入功能
@@ -123,7 +126,12 @@ export const InputPad = defineComponent({
           refAmount.value = "0";
         },
       },
-      { text: "提交", onClick: () => {} },
+      {
+        text: "提交",
+        onClick: () => {
+          context.emit("update:amount", refAmount.value);
+        },
+      },
     ];
     return () => (
       <>
@@ -131,12 +139,12 @@ export const InputPad = defineComponent({
           <span class={s.date}>
             <Icon name="date" class={s.icon}></Icon>
             <span>
-              <span onClick={showDatePicker}>
-                {new Time(refDate.value).format()}
+              <span onClick={showDatePicker} key={"time"}>
+                {new Time(props.happenAt).format()}
               </span>
               <Popup position="bottom" v-model:show={refIsDatePickerShow.value}>
                 <DatetimePicker
-                  value={refDate.value}
+                  value={props.happenAt}
                   type="date"
                   title="选择年月日"
                   onConfirm={onConfirm}
