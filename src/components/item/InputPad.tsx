@@ -7,6 +7,9 @@ export const InputPad = defineComponent({
   props: {
     happenAt: String,
     amount: Number,
+    onSubmit: {
+      type: Function,
+    },
   },
   setup(props, context) {
     // 日期选择器功能
@@ -130,6 +133,7 @@ export const InputPad = defineComponent({
         text: "提交",
         onClick: () => {
           context.emit("update:amount", parseFloat(refAmount.value) * 100);
+          props.onSubmit?.();
         },
       },
     ];

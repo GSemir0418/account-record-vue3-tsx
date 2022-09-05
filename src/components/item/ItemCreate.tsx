@@ -1,16 +1,26 @@
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { MainLayout } from "../../layouts/MainLayout";
 import { Icon } from "../../shared/Icon";
 import { Tabs, Tab } from "../../shared/Tabs";
 import { InputPad } from "./InputPad";
 import s from "./ItemCreate.module.scss";
 import { Tags } from "../../shared/Tags";
+import { http } from "../../shared/HttpClient";
 export const ItemCreate = defineComponent({
   setup(props, context) {
-    const refKind = ref("支出");
-    const refTagId = ref<number>();
-    const refHappenAt = ref<string>(new Date().toISOString());
-    const refAmount = ref<number>();
+    const formData = reactive({
+      kind: "expenses",
+      tags_id: [],
+      happen_at: new Date().toISOString(),
+      amount: 0,
+    });
+    const onSubmit = async () => {
+      const resp = await http.post<Resource<Item>>("/items", formData, {
+        timeout: 1000,
+        params: { _m: "itemCreate" },
+      });
+      console.log(resp);
+    };
     return () => (
       <MainLayout>
         {{
@@ -18,26 +28,27 @@ export const ItemCreate = defineComponent({
           icon: () => <Icon name="left" class={s.navIcon}></Icon>,
           main: () => (
             <div class={s.wrapper}>
-              <Tabs v-model:selected={refKind.value} class={s.tabs}>
-                <Tab name="支出">
+              <Tabs v-model:selected={formData.kind} class={s.tabs}>
+                <Tab name="expenses">
                   <Tags
                     kind={"expenses"}
                     key={"expenses"}
-                    v-model:selected={refTagId.value}
+                    v-model:selected={formData.tags_id[0]}
                   />
                 </Tab>
-                <Tab name="收入">
+                <Tab name="income">
                   <Tags
                     kind={"income"}
                     key={"income"}
-                    v-model:selected={refTagId.value}
+                    v-model:selected={formData.tags_id[0]}
                   />
                 </Tab>
               </Tabs>
               <div class={s.inputPad_wrapper}>
                 <InputPad
-                  v-model:happenAt={refHappenAt.value}
-                  v-model:amount={refAmount.value}
+                  v-model:happenAt={formData.happen_at}
+                  v-model:amount={formData.amount}
+                  onSubmit={onSubmit}
                 />
               </div>
             </div>

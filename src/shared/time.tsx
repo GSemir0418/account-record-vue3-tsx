@@ -13,13 +13,10 @@ export class Time {
   date: Date;
   constructor(date?: string | Date) {
     if (date === undefined) {
-      console.log("undefined", date);
       this.date = new Date();
     } else if (typeof date === "string") {
-      console.log("string", date);
       this.date = new Date(date);
     } else {
-      console.log("date", date);
       this.date = date;
     }
   }

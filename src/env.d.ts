@@ -12,6 +12,14 @@ type Tag = {
   sign: string;
   kind: "expenses" | "income";
 };
+type Item = {
+  id: number;
+  user_id: number;
+  tags_id: number[];
+  happen_at: string;
+  amount: number;
+  kind: "expenses" | "income";
+};
 type Resources<T = any> = {
   resources: T[];
   pager: {
@@ -19,4 +27,7 @@ type Resources<T = any> = {
     per_page: number;
     count: number;
   };
+};
+type Resource<T = any> = {
+  resource: T;
 };
