@@ -19,7 +19,7 @@ export const InputPad = defineComponent({
       onCancel();
     };
     // 数字输入功能
-    const refAmount = ref("0");
+    const refAmount = ref(props.amount ? (props.amount / 100).toString() : "0");
     const appendText = (n: number | string) => {
       const nString = n.toString();
       const dotIndex = refAmount.value.indexOf(".");
@@ -129,7 +129,7 @@ export const InputPad = defineComponent({
       {
         text: "提交",
         onClick: () => {
-          context.emit("update:amount", refAmount.value);
+          context.emit("update:amount", parseFloat(refAmount.value) * 100);
         },
       },
     ];
