@@ -31,3 +31,6 @@ type Resources<T = any> = {
 type Resource<T = any> = {
   resource: T;
 };
+type ResourceError = {
+  errors: Record<string, string>[];
+};

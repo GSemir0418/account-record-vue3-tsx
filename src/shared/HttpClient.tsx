@@ -74,6 +74,7 @@ http.instance.interceptors.request.use((config) => {
   }
   return config;
 });
+// mock的拦截器
 http.instance.interceptors.response.use(
   (resp) => {
     mock(resp);
