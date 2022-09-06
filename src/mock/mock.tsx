@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import { mockItemCreate } from "./mockItemCreate";
 import { mockSession } from "./mockSession";
 import { mockTagIndex } from "./mockTagIndex";
+import { mockTagShow } from "./mockTagShow";
 
 export const mock = (response: AxiosResponse) => {
   // 如果不是本地开发环境的host，那么不会mock数据
@@ -21,6 +22,9 @@ export const mock = (response: AxiosResponse) => {
       return true;
     case "itemCreate":
       [response.status, response.data] = mockItemCreate(response.config);
+      return true;
+    case "tagShow":
+      [response.status, response.data] = mockTagShow(response.config);
       return true;
   }
   return false;

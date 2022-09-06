@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { defineComponent, reactive, toRaw } from "vue";
+import { defineComponent, onMounted, reactive, ref, toRaw } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Button } from "../../shared/Button";
 import { Form, FormItem } from "../../shared/Form";
@@ -7,10 +7,14 @@ import { http } from "../../shared/HttpClient";
 import { validate, Rule, hasErrors } from "../../shared/validate";
 import s from "./Tag.module.scss";
 export const TagForm = defineComponent({
+  props: {
+    id: Number,
+  },
   setup(props, context) {
     const route = useRoute();
     const router = useRouter();
     const formData = reactive({
+      id: undefined,
       name: "",
       sign: "",
       kind: route.query.kind!.toString(),
@@ -52,10 +56,23 @@ export const TagForm = defineComponent({
       // 将validate返回的数据放入errors中
       Object.assign(errors, validate(data, rules));
       if (!hasErrors(errors)) {
-        await http.post("/tags", formData).catch(onError);
+        // 区别编辑与新增
+        const promise = (await formData.id)
+          ? http.patch(`/tags/${formData.id}`, formData, { timeout: 1000 })
+          : http.post("/tags", formData);
+        await promise.catch(onError);
         router.back();
       }
     };
+    onMounted(async () => {
+      const resp = await http.get<Resource<Tag>>(
+        `/tags/${props.id}`,
+        { _m: "tagShow" },
+        { timeout: 1000 }
+      );
+      console.log("1", resp);
+      Object.assign(formData, resp.data.resource);
+    });
     return () => (
       <Form onSubmit={onSubmit}>
         <FormItem

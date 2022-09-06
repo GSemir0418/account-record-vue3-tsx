@@ -29,7 +29,7 @@ export class HttpClient {
   }
   post<R = unknown>(
     url: string,
-    data?: Record<string, JSONValue>,
+    data?: Record<string, JSONValue | undefined>,
     config?: Omit<AxiosRequestConfig, "url" | "data" | "method">
   ) {
     return this.instance.request<R>({
@@ -41,7 +41,7 @@ export class HttpClient {
   }
   patch<R = unknown>(
     url: string,
-    data?: Record<string, JSONValue>,
+    data?: Record<string, JSONValue | undefined>,
     config?: Omit<AxiosRequestConfig, "url" | "data" | "method">
   ) {
     return this.instance.request<R>({
