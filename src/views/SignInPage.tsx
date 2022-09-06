@@ -10,6 +10,7 @@ import { useBool } from "../shared/useBool";
 import { hasErrors, validate } from "../shared/validate";
 import { useRoute, useRouter } from "vue-router";
 import { refreshMe } from "../shared/me";
+import { BackIcon } from "../shared/BackIcon";
 export const SignInPage = defineComponent({
   setup(props, context) {
     const validationCodeRef = ref<any>();
@@ -83,7 +84,7 @@ export const SignInPage = defineComponent({
       <MainLayout>
         {{
           default: () => "登录",
-          icon: () => <Icon name="left" />,
+          icon: () => <BackIcon />,
           main: () => (
             <div class={s.wrapper}>
               <div class={s.logo}>

@@ -9,6 +9,7 @@ import { http } from "../../shared/HttpClient";
 import { useRouter } from "vue-router";
 import { Dialog } from "vant";
 import { AxiosError } from "axios";
+import { BackIcon } from "../../shared/BackIcon";
 export const ItemCreate = defineComponent({
   setup(props, context) {
     const formData = reactive({
@@ -42,7 +43,7 @@ export const ItemCreate = defineComponent({
       <MainLayout>
         {{
           default: () => "记一笔",
-          icon: () => <Icon name="left" class={s.navIcon}></Icon>,
+          icon: () => <BackIcon />,
           main: () => (
             <div class={s.wrapper}>
               <Tabs v-model:selected={formData.kind} class={s.tabs}>

@@ -4,13 +4,14 @@ import { Button } from "../../shared/Button";
 import { Icon } from "../../shared/Icon";
 import { TagForm } from "./TagForm";
 import s from "./Tag.module.scss";
+import { BackIcon } from "../../shared/BackIcon";
 export const TagEdit = defineComponent({
   setup(props, context) {
     return () => (
       <MainLayout>
         {{
           default: () => "编辑标签",
-          icon: () => <Icon name="left" />,
+          icon: () => <BackIcon />,
           main: () => (
             <>
               <TagForm />
